@@ -20,6 +20,13 @@ const getIdentifier = (node) => {
   throw new ReferenceError(`${node.name} is not defined`);
 };
 
+// [node.identifier, node.assignment] = node.arguments;
+// node.type = 'VariableDeclaration';
+
+const define = (node) => {
+  environment[node.identifier.name] = node.assignment.value;
+};
+
 const evaluate = (node) => {
   if (node.type === 'CallExpression') { return apply(node); }
 
@@ -29,6 +36,10 @@ const evaluate = (node) => {
 
   if (node.type === 'Identifier') {
     return getIdentifier(node);
+  }
+
+  if (node.type === 'VariableDeclaration') {
+    return define(node);
   }
 };
 
